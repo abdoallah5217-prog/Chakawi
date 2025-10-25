@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إرسال شكوى</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-[#001F3F] to-[#003366] text-white min-h-screen flex flex-col items-center justify-center">
+
+  <h1 class="text-3xl font-bold text-blue-300 mb-6">📝 إرسال شكوى جديدة</h1>
+
+  <form id="complaintForm" class="bg-white/10 backdrop-blur p-6 rounded-2xl w-80 space-y-4">
+    <input type="text" id="name" placeholder="الاسم الكامل" class="w-full p-2 rounded bg-gray-800 text-white focus:outline-none">
+    <input type="text" id="subject" placeholder="الموضوع" class="w-full p-2 rounded bg-gray-800 text-white focus:outline-none">
+    <textarea id="message" placeholder="اكتب الشكوى هنا..." rows="5" class="w-full p-2 rounded bg-gray-800 text-white focus:outline-none"></textarea>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-600 w-full p-2 rounded font-bold transition">إرسال</button>
+  </form>
+
+  <p id="status" class="mt-4 text-green-400 hidden">تم حفظ الشكوى بنجاح ✅</p>
+
+  <script>
+    const form = document.getElementById('complaintForm');
+    const status = document.getElementById('status');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const data = {
+        name: document.getElementById('name').value,
+        subject: document.getElementById('subject').value,
+        message: document.getElementById('message').value,
+        date: new Date().toLocaleString()
+      };
+      let complaints = JSON.parse(localStorage.getItem('complaints') || '[]');
+      complaints.push(data);
+      localStorage.setItem('complaints', JSON.stringify(complaints));
+      form.reset();
+      status.classList.remove('hidden');
+      setTimeout(() => status.classList.add('hidden'), 3000);
+    });
+  </script>
+
+</body>
+</html>
